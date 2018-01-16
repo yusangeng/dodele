@@ -1,6 +1,6 @@
 {
   "name": "dodele",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Web前端事件代理.",
   "main": "lib/index.js",
   "scripts": {
