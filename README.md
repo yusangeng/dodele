@@ -11,11 +11,10 @@ npm i dodele --save
 本工具依赖[litchy](https://www.npmjs.com/package/litchy), 示例代码如下:
 
 ``` js
-import eventable from 'litchy/lib/eventable'
-import mix from 'litchy/mix'
+import Eventable from 'litchy/lib/Eventable'
+import mix from 'litchy/lib/mix'
 import Delegate from 'dodele'
 
-@eventable
 class Foobar extends mix(Eventable).with(Delegate) {
   // ...
 }
