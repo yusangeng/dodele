@@ -1,0 +1,34 @@
+{
+  "name": "dodele",
+  "version": "1.0.0",
+  "description": "Web前端事件代理.",
+  "main": "lib/index.js",
+  "scripts": {
+    "es5": "./node_modules/.bin/babel ./src -d ./lib --source-maps inline",
+    "prepublish": "npm run es5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yusangeng/dodele.git"
+  },
+  "keywords": [
+    "delegate",
+    "dom"
+  ],
+  "author": {
+    "name": "yusangeng",
+    "email": "yusangeng@outlook.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yusangeng/dodele/issues"
+  },
+  "homepage": "https://github.com/yusangeng/dodele#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-runtime": "^6.26.0"
+  }
+}
