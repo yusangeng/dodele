@@ -36,7 +36,7 @@ export default superclass => class extends superclass {
 
   constructor (...params) {
     super(...params)
-    this.cb_ = event => this.trigger({ type: 'dom', event }, true)
+    this.cb_ = event => this.trigger({ type: `dom:${event.type}`, event }, true)
     this.counter_ = {}
   }
 
@@ -56,7 +56,7 @@ export default superclass => class extends superclass {
 
   on$ (type, selector, callback) {
     const filter = createFilter(selector)
-    const off = this.recognize(type).on('dom', e => filter(e) && callback(e.event))
+    const off = this.recognize(type).on(`dom:${type}`, e => filter(e) && callback(e.event))
     return _ => off().unrecognize(type)
   }
 
