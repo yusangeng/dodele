@@ -1,3 +1,3 @@
-import Delegate from 'Delegate'
+import Delegate from './Delegate'
 
 export default Delegate
