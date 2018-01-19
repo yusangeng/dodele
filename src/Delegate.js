@@ -50,8 +50,12 @@ export default superclass => class extends superclass {
     super.dispose()
   }
 
-  initDelegate (el) {
+  initDelegate (el, callbacks = []) {
     this.el_ = el
+    callbacks.forEach(item => {
+      const { type, selector, callback } = item
+      this.on$(type, selector, callback.bind(this))
+    })
   }
 
   on$ (type, selector, callback) {
