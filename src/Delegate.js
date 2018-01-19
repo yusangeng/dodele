@@ -58,6 +58,10 @@ export default superclass => class extends superclass {
     })
   }
 
+  initDecoratedDelegate (el) {
+    this.initDelegate(el, this.constructor.prototype.__decorated_callbacks__ || [])
+  }
+
   on$ (type, selector, callback) {
     const filter = createFilter(selector)
     const off = this.recognize(type).on(`dom:${type}`, e => filter(e) && callback(e.event))
