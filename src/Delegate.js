@@ -6,7 +6,6 @@
 
 const { keys } = Object
 const capture = type => !['scroll', 'focus', 'blur'].includes(type)
-const isSpecial = str => str.startsWith('@')
 const isId = str => str.startsWith('#') && !(/[ >,]/).test(str)
 const isClass = str => str.startsWith('.') && !(/[ >,]/).test(str)
 
@@ -18,9 +17,6 @@ function createFilter (sel) {
   } else if (isClass(sel)) {
     const cls = sel.substring(1)
     return evt => evt.event.target.classList.contains(cls)
-  } else if (isSpecial(sel)) {
-    const [name, callbackName] = sel.split(':').map(el => el.trim())
-    return evt => evt.event.target.getAttribute(name) === callbackName
   } else if (isId(sel)) {
     const id = sel.substring(1)
     return evt => evt.event.target.id === id
@@ -36,18 +32,31 @@ export default superclass => class extends superclass {
 
   constructor (...params) {
     super(...params)
+
+    this.plugins_ = {}
     this.cb_ = event => this.trigger({ type: `dom:${event.type}`, event }, true)
     this.counter_ = {}
   }
 
   dispose () {
     const { el, cb_: cb, counter_: counter } = this
-    const detach = type => el.removeEventListener(type, cb, capture(type))
+    const detach = type => {
+      const plugin = this.plugins_[type]
+      if (plugin) {
+        plugin.unrecognize(this)
+      }
+
+      el.removeEventListener(type, cb, capture(type))
+    }
 
     keys(counter).forEach(type => counter[type] && detach(type))
-    this.el_ = this.cb_ = this.counter_ = null
+    this.plugins_ = this.el_ = this.cb_ = this.counter_ = null
 
     super.dispose()
+  }
+
+  installPlugin (plugin) {
+    this.plugins_[plugin.eventType] = plugin
   }
 
   initDelegate (el, callbacks = []) {
@@ -71,6 +80,11 @@ export default superclass => class extends superclass {
   recognize (type) {
     const n = this.counter_[type]
     if (!n) {
+      const plugin = this.plugins_[type]
+      if (plugin) {
+        plugin.recognize(this)
+      }
+
       this.el_.addEventListener(type, this.cb_, capture(type))
     }
 
@@ -81,6 +95,11 @@ export default superclass => class extends superclass {
   unrecognize (type) {
     const n = this.counter_[type]
     if (n === 1) {
+      const plugin = this.plugins_[type]
+      if (plugin) {
+        plugin.unrecognize(this)
+      }
+
       this.el_.removeEventListener(type, this.cb_, capture(type))
     }
 
