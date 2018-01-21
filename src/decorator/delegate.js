@@ -1,5 +1,5 @@
 import mix from 'mix-with'
-import Delegate from '../mixin/Delegate'
+import Delegate from '../Delegate'
 
 export default function delegate (target) {
   return class DecoratedDelegateClass extends mix(target).with(Delegate) {
