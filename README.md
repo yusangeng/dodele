@@ -158,13 +158,17 @@ import callback from 'dodele/lib/decorator/callback'
 // 插件对象
 class FoobarPlugin {
   // 插件必须拥有的属性, 自定义事件种类
-  get eventType(this) {
+  get eventType() {
     return 'foobar'
+  }
+
+  constructor(delegate) {
+    this.delegate_ = delegate
   }
 
   // 当上层逻辑监听foobar事件时, 此函数会被调用
   recognize() {
-    this.off_ = this.on$('click', '*', _ => {
+    this.off_ = this.delegate_.on$('click', '*', _ => {
       const e = new Event('foobar', {
         bubbles: true
       })
@@ -186,7 +190,7 @@ class FoobarPlugin {
 @delegate
 class Foobar {
   constructor(data) {
-    this.installPlugin(new FoobarPlugin())
+    this.installPlugin(new FoobarPlugin(this))
   }
 
   // 监听自定义事件
