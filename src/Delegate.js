@@ -74,7 +74,10 @@ export default superclass => class extends superclass {
   on$ (type, selector, callback) {
     const filter = createFilter(selector)
     const off = this.recognize(type).on(`dom:${type}`, e => filter(e) && callback(e.event))
-    return _ => off().unrecognize(type)
+    return _ => {
+      off()
+      this.unrecognize(type)
+    }
   }
 
   recognize (type) {
