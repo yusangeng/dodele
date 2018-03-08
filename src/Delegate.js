@@ -5,7 +5,7 @@
  */
 
 const { keys } = Object
-const capture = type => !['scroll', 'focus', 'blur'].includes(type)
+const capture = type => ['scroll', 'focus', 'blur'].includes(type)
 const isId = str => str.startsWith('#') && !(/[ >,]/).test(str)
 const isClass = str => str.startsWith('.') && !(/[ >,]/).test(str)
 
