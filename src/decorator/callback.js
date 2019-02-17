@@ -1,5 +1,5 @@
 
-export default function callback (type, selector) {
+export function callback (type, selector) {
   return function decorator (target, key, descriptor) {
     if (descriptor.get || descriptor.set) {
       throw new TypeError(`Property ${key} should NOT be decorated by @callback.`)
@@ -15,3 +15,7 @@ export default function callback (type, selector) {
     return descriptor
   }
 }
+
+export const on$ = callback
+
+export default callback
